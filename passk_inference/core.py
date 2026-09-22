@@ -4,6 +4,8 @@ from numbers import Integral
 
 import numpy as np
 
+from ._version import RESULT_FORMAT_VERSION, __version__
+
 
 def _positive_int(value, name):
     if isinstance(value, (bool, np.bool_)) or not isinstance(value, Integral) or value < 1:
@@ -151,6 +153,9 @@ def compare(c_base, n_base, c_rl, n_rl, *, ks=None, bootstrap=4000, alpha=0.05, 
     band["lower"][degenerate] = -1.0
     band["upper"][degenerate] = 1.0
     return {
+        "result_format_version": RESULT_FORMAT_VERSION,
+        "package_version": __version__,
+        "input_provenance": {"kind": "aligned_arrays"},
         "ks": ks.tolist(), "prompts": len(c_base), "alpha": float(alpha),
         "bootstrap": int(bootstrap), "seed": seed,
         "difference_direction": "rl_minus_base",

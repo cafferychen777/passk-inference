@@ -18,6 +18,7 @@ Paper = "https://arxiv.org/abs/2609.22547v1"
 Issues = "https://github.com/cafferychen777/passk-inference/issues"
 
 [project.optional-dependencies]
+report = ["matplotlib>=3.8,<4"]
 example = ["matplotlib>=3.8,<4"]
 test = ["pytest>=8,<10"]
 
@@ -31,4 +32,4 @@ include = ["passk_inference*"]
 testpaths = ["tests"]
 
 [tool.setuptools.dynamic]
-version = {attr = "passk_inference.__version__"}
+version = {attr = "passk_inference._version.__version__"}

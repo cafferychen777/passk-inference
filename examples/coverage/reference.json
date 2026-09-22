@@ -1,0 +1,529 @@
+{
+  "simulation_format_version": "1.0",
+  "package_version": "0.3.0",
+  "numpy_version": "2.5.3",
+  "synthetic": true,
+  "estimand": "population mixture mean RL-minus-base pass@k on the full declared grid",
+  "config": {
+    "prompts": [
+      50,
+      200
+    ],
+    "repetitions": 100,
+    "bootstrap": 399,
+    "trials": 64,
+    "maximum_k": 32,
+    "alpha": 0.05,
+    "seed": 2026
+  },
+  "scenarios": {
+    "homogeneous_null": {
+      "weights": [
+        1.0
+      ],
+      "base": [
+        0.1
+      ],
+      "rl": [
+        0.1
+      ]
+    },
+    "rare_null": {
+      "weights": [
+        1.0
+      ],
+      "base": [
+        0.001
+      ],
+      "rl": [
+        0.001
+      ]
+    },
+    "heterogeneous_null": {
+      "weights": [
+        0.5,
+        0.5
+      ],
+      "base": [
+        0.001,
+        0.4
+      ],
+      "rl": [
+        0.001,
+        0.4
+      ]
+    },
+    "heterogeneous_crossing": {
+      "weights": [
+        0.7,
+        0.3
+      ],
+      "base": [
+        0.15,
+        0.02
+      ],
+      "rl": [
+        0.3,
+        0.0002
+      ]
+    }
+  },
+  "results": [
+    {
+      "scenario": "homogeneous_null",
+      "prompts": 50,
+      "true_crossing_on_grid": false,
+      "true_first_loss_on_grid": null,
+      "true_difference": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "simultaneous_coverage": 0.95,
+      "simultaneous_coverage_mc95": [
+        0.8882495307680808,
+        0.9784563208456319
+      ],
+      "crossing_rate_kind": "false_crossing_rate",
+      "crossing_rate": 0.0,
+      "crossing_rate_mc95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "first_loss_set_coverage": 0.97,
+      "first_loss_set_coverage_mc95": [
+        0.9154806357094724,
+        0.9897454759759611
+      ],
+      "degenerate_repetition_fraction": 0.0
+    },
+    {
+      "scenario": "homogeneous_null",
+      "prompts": 200,
+      "true_crossing_on_grid": false,
+      "true_first_loss_on_grid": null,
+      "true_difference": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "simultaneous_coverage": 0.93,
+      "simultaneous_coverage_mc95": [
+        0.8625048526092651,
+        0.9656807389327273
+      ],
+      "crossing_rate_kind": "false_crossing_rate",
+      "crossing_rate": 0.0,
+      "crossing_rate_mc95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "first_loss_set_coverage": 0.98,
+      "first_loss_set_coverage_mc95": [
+        0.929988209271456,
+        0.9944980324498376
+      ],
+      "degenerate_repetition_fraction": 0.0
+    },
+    {
+      "scenario": "rare_null",
+      "prompts": 50,
+      "true_crossing_on_grid": false,
+      "true_first_loss_on_grid": null,
+      "true_difference": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "simultaneous_coverage": 0.95,
+      "simultaneous_coverage_mc95": [
+        0.8882495307680808,
+        0.9784563208456319
+      ],
+      "crossing_rate_kind": "false_crossing_rate",
+      "crossing_rate": 0.0,
+      "crossing_rate_mc95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "first_loss_set_coverage": 0.99,
+      "first_loss_set_coverage_mc95": [
+        0.9455138038212946,
+        0.9982325679358593
+      ],
+      "degenerate_repetition_fraction": 0.0
+    },
+    {
+      "scenario": "rare_null",
+      "prompts": 200,
+      "true_crossing_on_grid": false,
+      "true_first_loss_on_grid": null,
+      "true_difference": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "simultaneous_coverage": 0.98,
+      "simultaneous_coverage_mc95": [
+        0.929988209271456,
+        0.9944980324498376
+      ],
+      "crossing_rate_kind": "false_crossing_rate",
+      "crossing_rate": 0.0,
+      "crossing_rate_mc95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "first_loss_set_coverage": 0.99,
+      "first_loss_set_coverage_mc95": [
+        0.9455138038212946,
+        0.9982325679358593
+      ],
+      "degenerate_repetition_fraction": 0.0
+    },
+    {
+      "scenario": "heterogeneous_null",
+      "prompts": 50,
+      "true_crossing_on_grid": false,
+      "true_first_loss_on_grid": null,
+      "true_difference": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "simultaneous_coverage": 0.95,
+      "simultaneous_coverage_mc95": [
+        0.8882495307680808,
+        0.9784563208456319
+      ],
+      "crossing_rate_kind": "false_crossing_rate",
+      "crossing_rate": 0.0,
+      "crossing_rate_mc95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "first_loss_set_coverage": 0.99,
+      "first_loss_set_coverage_mc95": [
+        0.9455138038212946,
+        0.9982325679358593
+      ],
+      "degenerate_repetition_fraction": 0.0
+    },
+    {
+      "scenario": "heterogeneous_null",
+      "prompts": 200,
+      "true_crossing_on_grid": false,
+      "true_first_loss_on_grid": null,
+      "true_difference": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "simultaneous_coverage": 0.98,
+      "simultaneous_coverage_mc95": [
+        0.929988209271456,
+        0.9944980324498376
+      ],
+      "crossing_rate_kind": "false_crossing_rate",
+      "crossing_rate": 0.0,
+      "crossing_rate_mc95": [
+        0.0,
+        0.03699349820698568
+      ],
+      "first_loss_set_coverage": 1.0,
+      "first_loss_set_coverage_mc95": [
+        0.9630065017930143,
+        1.0
+      ],
+      "degenerate_repetition_fraction": 0.0
+    },
+    {
+      "scenario": "heterogeneous_crossing",
+      "prompts": 50,
+      "true_crossing_on_grid": true,
+      "true_first_loss_on_grid": 14,
+      "true_difference": [
+        0.09906,
+        0.150989988,
+        0.1723250640023999,
+        0.17428475100959945,
+        0.16442083781399758,
+        0.14776289524469277,
+        0.12761335985487415,
+        0.10609833143624582,
+        0.08454823433882669,
+        0.06376011796266913,
+        0.04417772900251045,
+        0.02601455460282301,
+        0.009337396231620576,
+        -0.005877301522733672,
+        -0.019705867801117643,
+        -0.03225266725375178,
+        -0.04363411780240042,
+        -0.053968637440606024,
+        -0.06337057123296183,
+        -0.07194675984471896,
+        -0.07979483422444535,
+        -0.08700261411283854,
+        -0.09364819042049731,
+        -0.09980041082550917,
+        -0.10551958345922877,
+        -0.11085827871247383,
+        -0.11586215336542077,
+        -0.12057075093711785,
+        -0.12501825189234742,
+        -0.1292341602762604,
+        -0.13324392164649307,
+        -0.13706947234142863
+      ],
+      "simultaneous_coverage": 0.96,
+      "simultaneous_coverage_mc95": [
+        0.9016292856411208,
+        0.9843366960084523
+      ],
+      "crossing_rate_kind": "power",
+      "crossing_rate": 0.96,
+      "crossing_rate_mc95": [
+        0.9016292856411208,
+        0.9843366960084523
+      ],
+      "first_loss_set_coverage": 0.99,
+      "first_loss_set_coverage_mc95": [
+        0.9455138038212946,
+        0.9982325679358593
+      ],
+      "degenerate_repetition_fraction": 0.0
+    },
+    {
+      "scenario": "heterogeneous_crossing",
+      "prompts": 200,
+      "true_crossing_on_grid": true,
+      "true_first_loss_on_grid": 14,
+      "true_difference": [
+        0.09906,
+        0.150989988,
+        0.1723250640023999,
+        0.17428475100959945,
+        0.16442083781399758,
+        0.14776289524469277,
+        0.12761335985487415,
+        0.10609833143624582,
+        0.08454823433882669,
+        0.06376011796266913,
+        0.04417772900251045,
+        0.02601455460282301,
+        0.009337396231620576,
+        -0.005877301522733672,
+        -0.019705867801117643,
+        -0.03225266725375178,
+        -0.04363411780240042,
+        -0.053968637440606024,
+        -0.06337057123296183,
+        -0.07194675984471896,
+        -0.07979483422444535,
+        -0.08700261411283854,
+        -0.09364819042049731,
+        -0.09980041082550917,
+        -0.10551958345922877,
+        -0.11085827871247383,
+        -0.11586215336542077,
+        -0.12057075093711785,
+        -0.12501825189234742,
+        -0.1292341602762604,
+        -0.13324392164649307,
+        -0.13706947234142863
+      ],
+      "simultaneous_coverage": 0.94,
+      "simultaneous_coverage_mc95": [
+        0.8752318455410406,
+        0.9722138760368118
+      ],
+      "crossing_rate_kind": "power",
+      "crossing_rate": 1.0,
+      "crossing_rate_mc95": [
+        0.9630065017930143,
+        1.0
+      ],
+      "first_loss_set_coverage": 0.97,
+      "first_loss_set_coverage_mc95": [
+        0.9154806357094724,
+        0.9897454759759611
+      ],
+      "degenerate_repetition_fraction": 0.0
+    }
+  ]
+}

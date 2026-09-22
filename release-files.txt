@@ -9,6 +9,10 @@ docs/PAPER.md
 docs/RELEASING.md
 docs/TUTORIAL.md
 examples/base.jsonl
+examples/coverage/README.md
+examples/coverage/coverage.png
+examples/coverage/reference.json
+examples/coverage/simulate.py
 examples/deepscaler32k/README.md
 examples/deepscaler32k/base.jsonl
 examples/deepscaler32k/comparison.png
@@ -19,10 +23,12 @@ examples/deepscaler32k/rl.jsonl
 examples/rl.jsonl
 passk_inference/__init__.py
 passk_inference/__main__.py
+passk_inference/_version.py
 passk_inference/cli.py
 passk_inference/core.py
 passk_inference/io.py
 passk_inference/kernel.py
+passk_inference/report.py
 pyproject.toml
 release-files.txt
 scripts/check_sdist.py

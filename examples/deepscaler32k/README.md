@@ -22,3 +22,8 @@ and manuscript hashes. Missing generation revisions are explicitly recorded as
 unknown. `expected.json` is a checked numerical reference; `comparison.png` is a
 preview generated from these counts. The script always recomputes its result.
 See [paper mapping](../../docs/PAPER.md) for scope and provenance.
+
+The example uses the public `compare_files` and `write_report` APIs. The same
+report is available for other data through `passk-inference --output DIR`.
+`expected.json` retains the v0.2.0 numerical reference; newly generated JSON
+records the currently installed version, format version and input hashes.

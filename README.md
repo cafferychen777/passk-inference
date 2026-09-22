@@ -49,8 +49,24 @@ and integer trials `n`, for example `{"id":"problem-1","c":5,"n":128}`.
 Both files must contain exactly the same IDs; row order does not matter.
 
 ```bash
+python -m pip install '.[report]'
+passk-inference --base base.jsonl --rl rl.jsonl --output output/my-comparison
+```
+
+This writes `result.json`, `curves.csv` and `comparison.png`, using the same
+report implementation as the paper example. `--base-label` and `--rl-label`
+set figure labels. Files with these names in the output directory are replaced.
+JSON is also printed to stdout; without `--output`, the CLI remains JSON-only
+and does not require Matplotlib:
+
+```bash
 passk-inference --base base.jsonl --rl rl.jsonl --bootstrap 4000 --seed 0 > result.json
 ```
+
+Every result records the package version, result format version and analysis
+settings. File-based comparisons also record SHA-256 hashes of the exact input
+bytes consumed, by base/RL role, without local paths. See the
+[result contract](docs/API.md#results-and-provenance).
 
 By default, the grid is every integer from 1 through the smallest trial count.
 Differences are **RL minus base**. Output includes both curves, the simultaneous
@@ -64,13 +80,24 @@ The eight-prompt files `examples/base.jsonl` and `examples/rl.jsonl` are
 The optional response-kernel API is a working model for prediction; it is not
 needed for the model-free paper result.
 
+## Check statistical behavior under known truths
+
+The [synthetic coverage example](examples/coverage/README.md) varies prompt
+count, rare success and heterogeneity, and reports whole-grid coverage, crossing
+power or false detection, and Monte Carlo intervals. It is independent of the
+real-data example and is not run on every CI build:
+
+```bash
+python examples/coverage/simulate.py
+```
+
 ## Development and release
 
 ```bash
 python -m pip install -e '.[test,example]' build
 python -m pytest
 python -m build
-python scripts/check_sdist.py dist/*.tar.gz
+python scripts/check_sdist.py dist/passk_inference-0.3.0.tar.gz
 python scripts/export_release.py
 ```
 

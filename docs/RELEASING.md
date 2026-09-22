@@ -10,6 +10,7 @@ passk-inference/
   examples/
     base.jsonl, rl.jsonl     # Synthetic teaching data
     deepscaler32k/           # Real counts, provenance, script, checked result, image
+    coverage/               # Synthetic repeated-sampling experiment; outside CI
   docs/                     # API, tutorial, paper mapping, release policy
   tests/                    # Local and CI correctness checks
   scripts/export_release.py # Exact allowlist export and privacy checks
@@ -43,7 +44,7 @@ rejects symlinks, missing paths, traversal and common private-path/token pattern
 It is a focused safeguard, not a guarantee that arbitrary files are safe.
 
 The setuptools sdist is checked against the same allowlist with
-`python scripts/check_sdist.py dist/*.tar.gz`. Only an explicit set of generated
+`python scripts/check_sdist.py dist/passk_inference-0.3.0.tar.gz`. Only an explicit set of generated
 packaging metadata files may be added. Missing, unexpected, duplicate, linked or
 altered source files fail the check. CI runs this check after building; run it
 before uploading any locally built sdist as well.
@@ -51,7 +52,7 @@ before uploading any locally built sdist as well.
 ## Validate and publish a fixed version
 
 1. Run `python -m pytest` and the real example. Inspect the generated figure.
-2. Run `python -m build`, `python scripts/check_sdist.py dist/*.tar.gz`, and
+2. Run `python -m build`, `python scripts/check_sdist.py dist/passk_inference-0.3.0.tar.gz`, and
    `python scripts/export_release.py`. The latter writes
    a deterministic versioned source archive and per-file SHA-256 manifest.
 3. Test from the extracted archive outside the research workspace; install the
@@ -61,9 +62,10 @@ before uploading any locally built sdist as well.
 5. Before any commit, inspect `git status`, add individually reviewed files by
    exact path (never `git add .`), and inspect `git diff --cached`.
 6. When publishing is authorized,
-   create the remote, push the reviewed tree, and create annotated tag `v0.2.0`
+   create the remote, push the reviewed tree, and create annotated tag for the tested version (currently `v0.3.0`)
    on that tested commit. Attach the source archive and checksums to the release.
    Verify the public links and GitHub CI before using them in a CV.
 
 Published versions are listed on the [GitHub releases page](https://github.com/cafferychen777/passk-inference/releases).
-The `v0.2.0` tag identifies the code associated with this example and paper version.
+The original `v0.2.0` tag remains the initial paper release. Later releases retain
+the paper-result regression and document software changes in the changelog.

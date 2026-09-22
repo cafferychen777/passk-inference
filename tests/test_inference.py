@@ -154,3 +154,82 @@ def test_jsonl_rejects_non_integer_count_types(tmp_path, field, value):
     path.write_text(json.dumps(row) + '\n')
     with pytest.raises(ValueError, match=rf':1: {field} must be a JSON integer'):
         load_counts(path)
+
+
+def test_file_provenance_hashes_the_parsed_snapshot(tmp_path, monkeypatch):
+    import hashlib
+    import passk_inference.io as count_io
+    from passk_inference import __version__, compare_files
+    base, rl = tmp_path / 'base.jsonl', tmp_path / 'rl.jsonl'
+    raw = b'{"id":"a","c":1,"n":4}\n{"id":"b","c":2,"n":4}\n'
+    base.write_bytes(raw)
+    rl.write_bytes(raw)
+    original = count_io._parse_counts
+    def mutate_after_snapshot(content, source):
+        base.write_text('changed after the snapshot')
+        return original(content, source)
+    monkeypatch.setattr(count_io, '_parse_counts', mutate_after_snapshot)
+    result = compare_files(base, rl, bootstrap=19)
+    assert result['package_version'] == __version__
+    assert result['result_format_version'] == '1.0'
+    assert result['mean'] == [0.0] * 4
+    assert result['input_provenance']['files'] == {
+        role: {'sha256': hashlib.sha256(raw).hexdigest()} for role in ['base', 'rl']}
+    assert str(tmp_path) not in json.dumps(result)
+
+
+def test_cli_report_json_csv_and_plot_agree(tmp_path, capsys):
+    import csv
+    pytest.importorskip('matplotlib')
+    from passk_inference.cli import main
+    base, rl = tmp_path / 'base.jsonl', tmp_path / 'rl.jsonl'
+    base.write_text('{"id":"a","c":0,"n":4}\n{"id":"b","c":2,"n":4}\n')
+    rl.write_text('{"id":"a","c":1,"n":4}\n{"id":"b","c":3,"n":4}\n')
+    output = tmp_path / 'report'
+    main(['--base', str(base), '--rl', str(rl), '--bootstrap', '19', '--output', str(output)])
+    result = json.loads(capsys.readouterr().out)
+    assert result == json.loads((output / 'result.json').read_text())
+    with (output / 'curves.csv').open() as handle:
+        rows = list(csv.DictReader(handle))
+    for i, row in enumerate(rows):
+        assert float(row['rl_minus_base']) == result['mean'][i]
+        assert float(row['simultaneous_lower']) == result['lower'][i]
+        assert float(row['simultaneous_upper']) == result['upper'][i]
+        expected = ('gain' if result['lower'][i] > 0 else
+                    'loss' if result['upper'][i] < 0 else 'inconclusive')
+        assert row['evidence'] == expected
+    assert (output / 'comparison.png').read_bytes().startswith(b'\x89PNG\r\n\x1a\n')
+
+
+@pytest.mark.parametrize('ks,expected', [([1, 3], 'sparse grid'), ([1], '[1, ∞)')])
+def test_report_handles_sparse_and_unbounded_sets(tmp_path, monkeypatch, ks, expected):
+    pytest.importorskip('matplotlib')
+    from matplotlib.figure import Figure
+    from passk_inference import write_report
+    captured = []
+    monkeypatch.setattr(Figure, 'savefig', lambda fig, *args, **kwargs:
+                        captured.append([ax.get_title() for ax in fig.axes]))
+    result = compare([0, 1, 2, 3], 4, [1, 2, 3, 4], 4, ks=ks, alpha=.1, bootstrap=99)
+    write_report(result, tmp_path)
+    assert expected in captured[0][1]
+    if len(ks) == 1:
+        assert '90%' in captured[0][1]
+
+
+def test_json_cli_does_not_import_plotting(tmp_path, capsys, monkeypatch):
+    import builtins
+    from passk_inference.cli import main
+    original = builtins.__import__
+    def no_plotting(name, *args, **kwargs):
+        if name.startswith('matplotlib'):
+            raise ImportError('plotting dependency absent')
+        return original(name, *args, **kwargs)
+    monkeypatch.setattr(builtins, '__import__', no_plotting)
+    path = tmp_path / 'counts.jsonl'
+    path.write_text('{"id":"a","c":1,"n":4}\n{"id":"b","c":2,"n":4}\n')
+    assert main(['--base', str(path), '--rl', str(path), '--bootstrap', '19']) == 0
+    assert json.loads(capsys.readouterr().out)['prompts'] == 2
+    with pytest.raises(SystemExit) as exc:
+        main(['--base', str(path), '--rl', str(path), '--output', str(tmp_path / 'report')])
+    assert exc.value.code == 2
+    assert 'Plotting requires matplotlib' in capsys.readouterr().err

@@ -13,7 +13,7 @@ def main():
     if not files or len(files) != len(set(files)):
         raise ValueError('Empty or duplicate release paths')
     version = re.search(r'__version__ = "([^"]+)"',
-                        (ROOT / 'passk_inference/__init__.py').read_text())[1]
+                        (ROOT / 'passk_inference/_version.py').read_text())[1]
     payload = {}
     for name in files:
         path = ROOT / name

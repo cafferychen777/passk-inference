@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 — 2026-09-22
+
+- Add reusable JSON/CSV/PNG reports through `--output` and `write_report`; the
+  paper example now uses the same reporting implementation.
+- Add `compare_files`, exact input-byte hashes, software version and a versioned
+  JSON result contract; keep JSON-only CLI use free of plotting dependencies.
+- Add a separate synthetic CPU example for whole-grid coverage, crossing power,
+  false detection and Monte Carlo uncertainty.
+- Preserve the v0.2.0 real-data numerical reference and the [11,61] paper result.
+
 ## 0.2.0 — 2026-09-22
 
 - Add a real, CPU-only DeepScaleR 32k example that recomputes the paper's [11,61]

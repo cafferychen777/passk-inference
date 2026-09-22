@@ -4,8 +4,8 @@ import argparse
 import json
 
 from . import __version__
-from .core import compare
-from .io import load_pair
+from .io import compare_files
+from .report import write_report
 
 
 def main(argv=None):
@@ -17,10 +17,15 @@ def main(argv=None):
     parser.add_argument("--bootstrap", type=int, default=4000)
     parser.add_argument("--alpha", type=float, default=0.05)
     parser.add_argument("--seed", type=int, default=0)
+    parser.add_argument("--output", help="directory for result.json, curves.csv and comparison.png")
+    parser.add_argument("--base-label", default="Base", help="base model display name in the figure")
+    parser.add_argument("--rl-label", default="RL", help="RL model display name in the figure")
     args = parser.parse_args(argv)
     try:
-        result = compare(*load_pair(args.base, args.rl), ks=args.ks,
-                         bootstrap=args.bootstrap, alpha=args.alpha, seed=args.seed)
+        result = compare_files(args.base, args.rl, ks=args.ks,
+                               bootstrap=args.bootstrap, alpha=args.alpha, seed=args.seed)
+        if args.output:
+            write_report(result, args.output, base_label=args.base_label, rl_label=args.rl_label)
         print(json.dumps(result, indent=2, allow_nan=False))
     except (OSError, ValueError) as exc:
         parser.error(str(exc))
