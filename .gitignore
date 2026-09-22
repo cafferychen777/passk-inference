@@ -1,0 +1,27 @@
+# Publish only the standalone package, never its parent research workspace.
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+.venv/
+venv/
+build/
+dist/
+output/
+.DS_Store
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.log
+*.bak
+*.bak-*
+.ipynb_checkpoints/
+.claude/
+.codex/
+.idea/
+.vscode/

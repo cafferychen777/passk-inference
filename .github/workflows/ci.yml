@@ -1,0 +1,28 @@
+name: Package and paper example
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.12', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: python -m pip install '.[test,example]' build
+      - run: python -m pytest
+      - run: python examples/deepscaler32k/reproduce.py
+      - run: python -m build
+      - run: python scripts/check_sdist.py dist/*.tar.gz
+      - run: python scripts/export_release.py
+      - run: |
+          python -m venv /tmp/passk-wheel
+          /tmp/passk-wheel/bin/python -m pip install dist/*.whl 'matplotlib>=3.8,<4'
+          cp -R examples /tmp/passk-examples
+          cd /tmp
+          /tmp/passk-wheel/bin/python -m passk_inference --version
+          /tmp/passk-wheel/bin/python /tmp/passk-examples/deepscaler32k/reproduce.py

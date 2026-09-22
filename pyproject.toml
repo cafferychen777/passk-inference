@@ -1,0 +1,34 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "passk-inference"
+dynamic = ["version"]
+description = "Paired pass@k inference and grid-based response kernels"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24,<3", "scipy>=1.10,<2"]
+
+[project.urls]
+Repository = "https://github.com/cafferychen777/passk-inference"
+Paper = "https://arxiv.org/abs/2609.22547v1"
+Issues = "https://github.com/cafferychen777/passk-inference/issues"
+
+[project.optional-dependencies]
+example = ["matplotlib>=3.8,<4"]
+test = ["pytest>=8,<10"]
+
+[project.scripts]
+passk-inference = "passk_inference.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["passk_inference*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.dynamic]
+version = {attr = "passk_inference.__version__"}
