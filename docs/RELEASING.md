@@ -15,7 +15,8 @@ passk-inference/
   tests/                    # Local and CI correctness checks
   scripts/export_release.py # Exact allowlist export and privacy checks
   scripts/check_sdist.py     # Reject unexpected, missing or altered sdist files
-  .github/workflows/ci.yml   # Tests, real example, distributions, isolated wheel
+  scripts/verify_pypi.py     # Published distribution identity check
+  .github/workflows/        # Shared CI and gated PyPI/GitHub releases
   pyproject.toml
   LICENSE
   README.md
@@ -44,28 +45,44 @@ rejects symlinks, missing paths, traversal and common private-path/token pattern
 It is a focused safeguard, not a guarantee that arbitrary files are safe.
 
 The setuptools sdist is checked against the same allowlist with
-`python scripts/check_sdist.py dist/passk_inference-0.3.0.tar.gz`. Only an explicit set of generated
+`python scripts/check_sdist.py dist/*.tar.gz`. Only an explicit set of generated
 packaging metadata files may be added. Missing, unexpected, duplicate, linked or
 altered source files fail the check. CI runs this check after building; run it
 before uploading any locally built sdist as well.
 
-## Validate and publish a fixed version
+## Automatic PyPI and GitHub releases
 
-1. Run `python -m pytest` and the real example. Inspect the generated figure.
-2. Run `python -m build`, `python scripts/check_sdist.py dist/passk_inference-0.3.0.tar.gz`, and
-   `python scripts/export_release.py`. The latter writes
-   a deterministic versioned source archive and per-file SHA-256 manifest.
-3. Test from the extracted archive outside the research workspace; install the
-   wheel into a fresh environment and run the example there too.
-4. The example is pinned to [arXiv:2609.22547v1](https://arxiv.org/abs/2609.22547v1).
-   Keep this versioned mapping when linking the code from a CV or later release.
-5. Before any commit, inspect `git status`, add individually reviewed files by
-   exact path (never `git add .`), and inspect `git diff --cached`.
-6. When publishing is authorized,
-   create the remote, push the reviewed tree, and create annotated tag for the tested version (currently `v0.3.0`)
-   on that tested commit. Attach the source archive and checksums to the release.
-   Verify the public links and GitHub CI before using them in a CV.
+The `release.yml` workflow runs on `v*` tag pushes. It calls the same CI workflow
+used for pull requests and main, covering Python 3.10, 3.12, 3.13 and 3.14. Only
+matching stable `vMAJOR.MINOR.PATCH` tags proceed to publication.
 
-Published versions are listed on the [GitHub releases page](https://github.com/cafferychen777/passk-inference/releases).
-The original `v0.2.0` tag remains the initial paper release. Later releases retain
-the paper-result regression and document software changes in the changelog.
+1. Update `passk_inference/_version.py` and the changelog. Review the allowlist.
+2. Run the tests and paper example, then build, check the sdist inventory, and
+   run `python -m twine check --strict dist/*.whl dist/*.tar.gz` in a clean build.
+3. Commit the reviewed changes and push main. Do not include generated output,
+   environments or credentials. Inspect `git status` and `git diff --cached`.
+4. Once main CI passes, create an annotated tag matching the package version and
+   push that tag. No local upload command or manual GitHub release is required.
+5. The release workflow tests, builds once, checks the distributions and stores
+   their hashes. A separate `pypi` environment job uploads that same wheel and
+   sdist using PyPI OIDC Trusted Publishing, without a stored API token.
+6. Post-publication checks compare PyPI SHA-256 hashes with the built artifacts,
+   install the pinned public version in a fresh environment, and reproduce
+   [11,61]. Only then does the workflow create the GitHub release and attach the
+   same distributions, reviewed source ZIP and `SHA256SUMS.txt`.
+
+The PyPI publisher is limited to owner `cafferychen777`, repository
+`passk-inference`, workflow `release.yml`, environment `pypi`. GitHub restricts
+that environment to `v*` tags. Pull requests and ordinary branch pushes cannot
+publish. Third-party Actions are pinned to immutable commits. Only the publishing
+job receives `id-token: write`; only the GitHub release job can write releases.
+
+Failed runs can be retried on the same tag. Existing PyPI files are skipped but
+must still pass exact hash verification. If rebuilding produces different bytes,
+reuse the original build artifact and rerun only the failed jobs; do not replace
+an existing version or move a published tag. A new build needs a new version.
+
+The `example` and `report` extras install plotting dependencies. The PyPI wheel
+contains the library and CLI; example scripts and frozen counts are in the
+repository and source release. Historical tags, including v0.2.0 and v0.3.0,
+remain unchanged. The first PyPI version is v0.3.1.

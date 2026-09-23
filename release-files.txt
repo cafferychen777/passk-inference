@@ -1,4 +1,5 @@
 .github/workflows/ci.yml
+.github/workflows/release.yml
 .gitignore
 CHANGELOG.md
 LICENSE
@@ -33,5 +34,6 @@ pyproject.toml
 release-files.txt
 scripts/check_sdist.py
 scripts/export_release.py
+scripts/verify_pypi.py
 tests/test_inference.py
 tests/test_release.py

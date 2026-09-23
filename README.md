@@ -5,13 +5,24 @@ Compare the same prompts across base and RL checkpoints with a simultaneous
 confidence band over the sampling-budget grid. Identify supported gains,
 supported losses, and a confidence set for the first loss budget.
 
-[Paper](https://arxiv.org/abs/2609.22547v1) · [Code and API](docs/API.md) · [Real example](examples/deepscaler32k/README.md)
+[Paper](https://arxiv.org/abs/2609.22547v1) · [Code and API](https://github.com/cafferychen777/passk-inference/blob/main/docs/API.md) · [Real example](https://github.com/cafferychen777/passk-inference/blob/main/examples/deepscaler32k/README.md)
 
 This is a tool for comparing checkpoints and sampling budgets on a specified
 task population and decoding setup. It does not measure general capability or
 include uncertainty across independent training runs.
 
-![Real DeepScaleR comparison](examples/deepscaler32k/comparison.png)
+![Real DeepScaleR comparison](https://raw.githubusercontent.com/cafferychen777/passk-inference/main/examples/deepscaler32k/comparison.png)
+
+## Install from PyPI
+
+```bash
+python -m pip install "passk-inference[report]"
+passk-inference --base base.jsonl --rl rl.jsonl --output output/comparison
+```
+
+Use `python -m pip install passk-inference` for the API and JSON-only CLI.
+The wheel contains the software; the repository and source release include the
+real and synthetic example datasets and scripts.
 
 ## Run the paper example on a laptop
 
@@ -40,7 +51,7 @@ hashes, recomputes the analysis, checks the paper result, and writes
 The first-loss confidence set is **[11, 61]**. It is not a precise crossover
 point or a universal deployment threshold. This is the paper's **post hoc dense
 grid analysis**; the original sparse-grid test and its p-value are distinct.
-See [data provenance and paper mapping](docs/PAPER.md).
+See [data provenance and paper mapping](https://github.com/cafferychen777/passk-inference/blob/main/docs/PAPER.md).
 
 ## Use your own counts
 
@@ -66,14 +77,14 @@ passk-inference --base base.jsonl --rl rl.jsonl --bootstrap 4000 --seed 0 > resu
 Every result records the package version, result format version and analysis
 settings. File-based comparisons also record SHA-256 hashes of the exact input
 bytes consumed, by base/RL role, without local paths. See the
-[result contract](docs/API.md#results-and-provenance).
+[result contract](https://github.com/cafferychen777/passk-inference/blob/main/docs/API.md#results-and-provenance).
 
 By default, the grid is every integer from 1 through the smallest trial count.
 Differences are **RL minus base**. Output includes both curves, the simultaneous
 band, supported gain/loss budgets, inconclusive budgets, and the first-loss set.
 Supplying a sparse `--ks` grid disables the all-integer first-loss interval.
 The procedure assumes independent prompt rows and the sampling assumptions in
-the [API reference](docs/API.md). Insufficient evidence is not equivalence.
+the [API reference](https://github.com/cafferychen777/passk-inference/blob/main/docs/API.md). Insufficient evidence is not equivalence.
 
 The eight-prompt files `examples/base.jsonl` and `examples/rl.jsonl` are
 **synthetic teaching data**, separate from the real example above.
@@ -82,7 +93,7 @@ needed for the model-free paper result.
 
 ## Check statistical behavior under known truths
 
-The [synthetic coverage example](examples/coverage/README.md) varies prompt
+The [synthetic coverage example](https://github.com/cafferychen777/passk-inference/blob/main/examples/coverage/README.md) varies prompt
 count, rare success and heterogeneity, and reports whole-grid coverage, crossing
 power or false detection, and Monte Carlo intervals. It is independent of the
 real-data example and is not run on every CI build:
@@ -97,11 +108,11 @@ python examples/coverage/simulate.py
 python -m pip install -e '.[test,example]' build
 python -m pytest
 python -m build
-python scripts/check_sdist.py dist/passk_inference-0.3.0.tar.gz
+python scripts/check_sdist.py dist/passk_inference-0.3.1.tar.gz
 python scripts/export_release.py
 ```
 
-[Repository layout and publication policy](docs/RELEASING.md) explains what is
+[Repository layout and publication policy](https://github.com/cafferychen777/passk-inference/blob/main/docs/RELEASING.md) explains what is
 included, what stays private, and how to create a versioned release. Code and
-original aggregate-count artifacts are under the [MIT license](LICENSE);
+original aggregate-count artifacts are under the [MIT license](https://github.com/cafferychen777/passk-inference/blob/main/LICENSE);
 third-party benchmark text and model weights are not redistributed.

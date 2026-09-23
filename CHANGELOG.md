@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.1 — 2026-09-23
+
+- Publish on PyPI with GitHub OIDC Trusted Publishing, restricted to release tags.
+- Gate releases on reusable CI, distribution inventory and metadata checks, then
+  verify PyPI file hashes and installation before creating the GitHub release.
+- Add Python 3.14 to CI and pin third-party Actions to immutable commits.
+- Document direct PyPI installation and render README links on both registries.
+
 ## 0.3.0 — 2026-09-22
 
 - Add reusable JSON/CSV/PNG reports through `--output` and `write_report`; the
